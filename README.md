@@ -66,7 +66,7 @@ The load balancer improves the api's availability and scalability since requests
 
 ## Nginx Proxy
 
-Nginx was employed to proxy http requests for security purposes among other reasons.
+Nginx was employed to proxy http requests to the api for security purposes among other reasons.
 
 
 ## Security
