@@ -1,6 +1,17 @@
 # oclapi2
 The new and improved OCL terminology service v2
 
+### Deploy with Ansible
+To deploy the api on ec2 instances group with ansible run:
+     `git clone https://github.com/booorayan/oclapi2.git`
+     
+then:
+      `cd ansible`
+      
+followed by 
+
+      `ansible-playbook -i inventory.yaml oclapi-playbook.yaml`
+
 
 #### Dev Setup
 1. `sysctl -w vm.max_map_count=262144` #required by Elasticsearch
