@@ -1,31 +1,15 @@
 version: '3'
 
 services:
-  db:
-    image: postgres:14.2-alpine
-    restart: "always"
-    shm_size: "128mb"
-    environment:
-      - POSTGRES_PASSWORD=${DB_PASSWORD-Postgres123}
-    healthcheck:
-      test: "pg_isready -U postgres"
-  redis:
-    image: redis:6.0.6-alpine
-    restart: "always"
-    healthcheck:
-      test: "redis-cli ping"
   api:
     image: openconceptlab/oclapi2:${ENVIRONMENT-production}
-    restart: "always"
+    restart: "no"
     ports:
       - 8000:8000
-    depends_on:
-      - db
-      # do not depend on other services so tests and pylint uses less memory
     environment:
-      - REDIS_HOST=${REDIS_HOST-redis}
-      - REDIS_PORT=${REDIS_PORT-6379}
-      - DB_HOST=${DB_HOST-db}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT-5432}
       - DB_PASSWORD=${DB_PASSWORD-Postgres123}
       - ES_HOST=${ES_HOST-es}
@@ -36,7 +20,7 @@ services:
       - SENTRY_DSN_KEY
       - API_SUPERUSER_PASSWORD=${API_SUPERUSER_PASSWORD-Root123}
       - API_SUPERUSER_TOKEN=${API_SUPERUSER_TOKEN-891b4b17feab99f3ff7e5b5d04ccc5da7aa96da6}
-      - API_BASE_URL=${API_BASE_URL-http://localhost:8000}
+      - API_BASE_URL=${API_BASE_URL-http://0.0.0.0:8000}
       - API_INTERNAL_BASE_URL=${API_INTERNAL_BASE_URL-http://api:8000}
       - EMAIL_NOREPLY_PASSWORD
       - AWS_ACCESS_KEY_ID
@@ -49,10 +33,10 @@ services:
       test: "curl --silent --fail http://localhost:8000/version/ || exit 1"
   celery:
     image: openconceptlab/oclapi2:${ENVIRONMENT-production}
-    command: ["bash", "-c", "CELERY_WORKER_NAME=default ./start_celery_worker.sh -P prefork -Q default -c 2"]
-    restart: "always"
+    command: [ "bash", "-c", "CELERY_WORKER_NAME=default ./start_celery_worker.sh -P prefork -Q default -c 2" ]
+    restart: "no"
     healthcheck:
-      test: ["CMD-SHELL", "-c", "CELERY_WORKER_NAME=default ./ping_celery_worker.sh"]
+      test: [ "CMD-SHELL", "-c", "CELERY_WORKER_NAME=default ./ping_celery_worker.sh" ]
     environment:
       - REDIS_HOST=${REDIS_HOST-redis}
       - REDIS_PORT=${REDIS_PORT-6379}
@@ -61,10 +45,10 @@ services:
       - ERRBIT_KEY
   celery_indexing:
     image: openconceptlab/oclapi2:${ENVIRONMENT-production}
-    command: ["bash", "-c", "CELERY_WORKER_NAME=indexing ./start_celery_worker.sh -P prefork -Q indexing -c 2"]
-    restart: "always"
+    command: [ "bash", "-c", "CELERY_WORKER_NAME=indexing ./start_celery_worker.sh -P prefork -Q indexing -c 2" ]
+    restart: "no"
     healthcheck:
-      test: ["CMD-SHELL", "-c", "CELERY_WORKER_NAME=indexing ./ping_celery_worker.sh"]
+      test: [ "CMD-SHELL", "-c", "CELERY_WORKER_NAME=indexing ./ping_celery_worker.sh" ]
     environment:
       - REDIS_HOST=${REDIS_HOST-redis}
       - REDIS_PORT=${REDIS_PORT-6379}
@@ -73,10 +57,10 @@ services:
       - ERRBIT_KEY
   celery_concurrent:
     image: openconceptlab/oclapi2:${ENVIRONMENT-production}
-    command: ["bash", "-c", "CELERY_WORKER_NAME=concurrent ./start_celery_worker.sh -P prefork -Q concurrent -c 2"]
-    restart: "always"
+    command: [ "bash", "-c", "CELERY_WORKER_NAME=concurrent ./start_celery_worker.sh -P prefork -Q concurrent -c 2" ]
+    restart: "no"
     healthcheck:
-      test:  ["CMD-SHELL", "-c", "CELERY_WORKER_NAME=concurrent ./ping_celery_worker.sh"]
+      test: [ "CMD-SHELL", "-c", "CELERY_WORKER_NAME=concurrent ./ping_celery_worker.sh" ]
     environment:
       - REDIS_HOST=${REDIS_HOST-redis}
       - REDIS_PORT=${REDIS_PORT-6379}
@@ -85,10 +69,10 @@ services:
       - ERRBIT_KEY
   celery_bulk_import_0_1:
     image: openconceptlab/oclapi2:${ENVIRONMENT-production}
-    command: ["bash", "-c", "CELERY_WORKER_NAME=bulk_import_0_1 ./start_celery_worker.sh -Q bulk_import_0,bulk_import_1 -c 1"]
-    restart: "always"
+    command: [ "bash", "-c", "CELERY_WORKER_NAME=bulk_import_0_1 ./start_celery_worker.sh -Q bulk_import_0,bulk_import_1 -c 1" ]
+    restart: "no"
     healthcheck:
-      test:  ["CMD-SHELL", "-c", "CELERY_WORKER_NAME=bulk_import_0_1 ./ping_celery_worker.sh"]
+      test: [ "CMD-SHELL", "-c", "CELERY_WORKER_NAME=bulk_import_0_1 ./ping_celery_worker.sh" ]
     environment:
       - REDIS_HOST=${REDIS_HOST-redis}
       - REDIS_PORT=${REDIS_PORT-6379}
@@ -97,10 +81,10 @@ services:
       - ERRBIT_KEY
   celery_bulk_import_2_3:
     image: openconceptlab/oclapi2:${ENVIRONMENT-production}
-    command: ["bash", "-c", "CELERY_WORKER_NAME=bulk_import_2_3 ./start_celery_worker.sh -Q bulk_import_2,bulk_import_3 -c 1"]
-    restart: "always"
+    command: [ "bash", "-c", "CELERY_WORKER_NAME=bulk_import_2_3 ./start_celery_worker.sh -Q bulk_import_2,bulk_import_3 -c 1" ]
+    restart: "no"
     healthcheck:
-      test:  ["CMD-SHELL", "-c", "CELERY_WORKER_NAME=bulk_import_2_3 ./ping_celery_worker.sh"]
+      test: [ "CMD-SHELL", "-c", "CELERY_WORKER_NAME=bulk_import_2_3 ./ping_celery_worker.sh" ]
     environment:
       - REDIS_HOST=${REDIS_HOST-redis}
       - REDIS_PORT=${REDIS_PORT-6379}
@@ -109,10 +93,10 @@ services:
       - ERRBIT_KEY
   celery_bulk_import_root:
     image: openconceptlab/oclapi2:${ENVIRONMENT-production}
-    command: ["bash", "-c", "CELERY_WORKER_NAME=bulk_import_root ./start_celery_worker.sh -Q bulk_import_root -c 1"]
-    restart: "always"
+    command: [ "bash", "-c", "CELERY_WORKER_NAME=bulk_import_root ./start_celery_worker.sh -Q bulk_import_root -c 1" ]
+    restart: "no"
     healthcheck:
-      test:  ["CMD-SHELL", "-c", "CELERY_WORKER_NAME=bulk_import_root ./ping_celery_worker.sh"]
+      test: [ "CMD-SHELL", "-c", "CELERY_WORKER_NAME=bulk_import_root ./ping_celery_worker.sh" ]
     environment:
       - REDIS_HOST=${REDIS_HOST-redis}
       - REDIS_PORT=${REDIS_PORT-6379}
@@ -121,22 +105,14 @@ services:
       - ERRBIT_KEY
   flower:
     image: openconceptlab/oclapi2:${ENVIRONMENT-production}
-    command: ["bash", "-c", "./start_flower.sh"]
+    command: [ "bash", "-c", "./start_flower.sh" ]
     ports:
       - 5555:5555
-    depends_on:
-      - redis- FLOWER_PASSWORD=${FLOWER_PASSWORD-Root123}
-      - REDIS_HOST=${REDIS_HOST-redis}
-      - REDIS_PORT=${REDIS_PORT-6379}
-    restart: "always"
     environment:
       - FLOWER_USER=${FLOWER_USER-root}
-      - FLOWER_PASSWORD=${FLOWER_PASSWORD-Root123}
-      - REDIS_HOST=${REDIS_HOST-redis}
-      - REDIS_PORT=${REDIS_PORT-6379}
-    restart: "always"
+
     healthcheck:
-      test: "curl --silent --fail -u $${FLOWER_USER:-root}:$${FLOWER_PASSWORD:-Root123} http://localhost:5555/metrics || exit 1"
+      test: "curl --silent --fail -u $${FLOWER_USER:-root}:$${FLOWER_PASSWORD:-Root123} http://0.0.0.0:5555/metrics || exit 1"
   es:
     image: elasticsearch:7.17.1
     environment:
@@ -149,9 +125,8 @@ services:
         hard: -1
     volumes:
       - es-data:/usr/share/elasticsearch/data
-    restart: "always"
+    restart: "no"
     healthcheck:
       test: "curl --silent --fail http://localhost:9200/_cluster/health || exit 1"
 volumes:
-  postgres-data:
   es-data:
