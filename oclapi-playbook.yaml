@@ -2,10 +2,9 @@
   hosts: ec2
   gather_facts: false
   remote_user: ubuntu
-  become: yes
+
   tasks:
     - name: Update apt packages
-      remote_user: ubuntu
       apt:
         update_cache: yes
 
@@ -22,8 +21,25 @@
         dest: /home/ubuntu/openclapi
         clone: yes
         update: yes
-
+#
+#    - name: Change ownership of remote repo from root to user 'ubuntu'
+#      file:
+#        path: /home/ubuntu/openclapi/
+#        owner: ubuntu
+#        group: ubuntu
+#        mode: '0644'
+        
     - name: Update vm c=map count for project
+      become: yes
       command: sysctl -w vm.max_map_count=262144
+
+    - name: Copy env file to host
+      copy:
+        src: ./.env
+        dest: /home/ubuntu/openclapi
+#        owner: ubuntu
+#        group: ubuntu
+#        mode: '0644'
+#
 
 #    - name: Run docker-compose file

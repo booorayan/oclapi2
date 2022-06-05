@@ -10,18 +10,18 @@ services:
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
       - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT-5432}
-      - DB_PASSWORD=${DB_PASSWORD-Postgres123}
-      - ES_HOST=${ES_HOST-es}
-      - ES_PORT=${ES_PORT-9200}
+      - DB_PORT=${DB_PORT}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - ES_HOST=${ES_HOST}
+      - ES_PORT=${ES_PORT}
       - ENVIRONMENT=${ENVIRONMENT-production}
-      - DEBUG=${DEBUG-FALSE}
-      - SECRET_KEY
+      - DEBUG=${DEBUG}
+      - SECRET_KEY=${SECRET_KEY}
       - SENTRY_DSN_KEY
-      - API_SUPERUSER_PASSWORD=${API_SUPERUSER_PASSWORD-Root123}
-      - API_SUPERUSER_TOKEN=${API_SUPERUSER_TOKEN-891b4b17feab99f3ff7e5b5d04ccc5da7aa96da6}
-      - API_BASE_URL=${API_BASE_URL-http://0.0.0.0:8000}
-      - API_INTERNAL_BASE_URL=${API_INTERNAL_BASE_URL-http://api:8000}
+      - API_SUPERUSER_PASSWORD=${API_SUPERUSER_PASSWORD}
+      - API_SUPERUSER_TOKEN=${API_SUPERUSER_TOKEN}
+      - API_BASE_URL=${API_BASE_URL}
+      - API_INTERNAL_BASE_URL=${API_INTERNAL_BASE_URL}
       - EMAIL_NOREPLY_PASSWORD
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
@@ -38,8 +38,8 @@ services:
     healthcheck:
       test: [ "CMD-SHELL", "-c", "CELERY_WORKER_NAME=default ./ping_celery_worker.sh" ]
     environment:
-      - REDIS_HOST=${REDIS_HOST-redis}
-      - REDIS_PORT=${REDIS_PORT-6379}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
       - DEBUG=${DEBUG-FALSE}
       - ERRBIT_URL
       - ERRBIT_KEY
@@ -50,8 +50,8 @@ services:
     healthcheck:
       test: [ "CMD-SHELL", "-c", "CELERY_WORKER_NAME=indexing ./ping_celery_worker.sh" ]
     environment:
-      - REDIS_HOST=${REDIS_HOST-redis}
-      - REDIS_PORT=${REDIS_PORT-6379}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
       - DEBUG=${DEBUG-FALSE}
       - ERRBIT_URL
       - ERRBIT_KEY
@@ -62,8 +62,8 @@ services:
     healthcheck:
       test: [ "CMD-SHELL", "-c", "CELERY_WORKER_NAME=concurrent ./ping_celery_worker.sh" ]
     environment:
-      - REDIS_HOST=${REDIS_HOST-redis}
-      - REDIS_PORT=${REDIS_PORT-6379}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
       - DEBUG=${DEBUG-FALSE}
       - ERRBIT_URL
       - ERRBIT_KEY
@@ -74,8 +74,8 @@ services:
     healthcheck:
       test: [ "CMD-SHELL", "-c", "CELERY_WORKER_NAME=bulk_import_0_1 ./ping_celery_worker.sh" ]
     environment:
-      - REDIS_HOST=${REDIS_HOST-redis}
-      - REDIS_PORT=${REDIS_PORT-6379}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
       - DEBUG=${DEBUG-FALSE}
       - ERRBIT_URL
       - ERRBIT_KEY
@@ -86,8 +86,8 @@ services:
     healthcheck:
       test: [ "CMD-SHELL", "-c", "CELERY_WORKER_NAME=bulk_import_2_3 ./ping_celery_worker.sh" ]
     environment:
-      - REDIS_HOST=${REDIS_HOST-redis}
-      - REDIS_PORT=${REDIS_PORT-6379}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
       - DEBUG=${DEBUG-FALSE}
       - ERRBIT_URL
       - ERRBIT_KEY
@@ -98,8 +98,8 @@ services:
     healthcheck:
       test: [ "CMD-SHELL", "-c", "CELERY_WORKER_NAME=bulk_import_root ./ping_celery_worker.sh" ]
     environment:
-      - REDIS_HOST=${REDIS_HOST-redis}
-      - REDIS_PORT=${REDIS_PORT-6379}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
       - DEBUG=${DEBUG-FALSE}
       - ERRBIT_URL
       - ERRBIT_KEY
@@ -109,7 +109,10 @@ services:
     ports:
       - 5555:5555
     environment:
-      - FLOWER_USER=${FLOWER_USER-root}
+      - FLOWER_USER=${FLOWER_USER}
+      - FLOWER_PASSWORD=${FLOWER_PASSWORD}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
 
     healthcheck:
       test: "curl --silent --fail -u $${FLOWER_USER:-root}:$${FLOWER_PASSWORD:-Root123} http://0.0.0.0:5555/metrics || exit 1"

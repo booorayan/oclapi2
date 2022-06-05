@@ -125,7 +125,8 @@ services:
     ports:
       - 5555:5555
     depends_on:
-      - redis- FLOWER_PASSWORD=${FLOWER_PASSWORD-Root123}
+      - redis
+      - FLOWER_PASSWORD=${FLOWER_PASSWORD-Root123}
       - REDIS_HOST=${REDIS_HOST-redis}
       - REDIS_PORT=${REDIS_PORT-6379}
     restart: "always"
