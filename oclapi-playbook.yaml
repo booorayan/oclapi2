@@ -1,25 +1,29 @@
 - name: Playbook to deploy open concept lab api
-  hosts:
+  hosts: ec2
   gather_facts: false
+  remote_user: ubuntu
+  become: yes
   tasks:
     - name: Update apt packages
       remote_user: ubuntu
       apt:
         update_cache: yes
 
-    - name: Add remote 'ubuntu' user to 'docker' group
-      remote_user: ubuntu
-      user:
-        name: "ubuntu"
-        group: "docker"
-        append: yes
-
-    - name: Clone git repo
+#    - name: Add remote 'ubuntu' user to 'docker' group
+#      remote_user: ubuntu
+#      user:
+#        name: "ubuntu"
+#        group: "docker"
+#        append: yes
+#
+    - name: Clone Github repo
       git:
-        url: https://github.com/booorayan/oclapi2.git
-        dest: /home/ubuntu
+        repo: https://github.com/booorayan/oclapi2.git
+        dest: /home/ubuntu/openclapi
+        clone: yes
+        update: yes
 
     - name: Update vm c=map count for project
-      command: sudo sysctl vm.map_count=266
+      command: sysctl -w vm.max_map_count=262144
 
-    - name: Run docker-compose file
+#    - name: Run docker-compose file
