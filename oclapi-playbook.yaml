@@ -2,44 +2,26 @@
   hosts: ec2
   gather_facts: false
   remote_user: ubuntu
+  become: yes
 
   tasks:
     - name: Update apt packages
       apt:
         update_cache: yes
 
-#    - name: Add remote 'ubuntu' user to 'docker' group
-#      remote_user: ubuntu
-#      user:
-#        name: "ubuntu"
-#        group: "docker"
-#        append: yes
-#
     - name: Clone Github repo
       git:
         repo: https://github.com/booorayan/oclapi2.git
         dest: /home/ubuntu/openclapi
         clone: yes
         update: yes
-#
-#    - name: Change ownership of remote repo from root to user 'ubuntu'
-#      file:
-#        path: /home/ubuntu/openclapi/
-#        owner: ubuntu
-#        group: ubuntu
-#        mode: '0644'
-        
-    - name: Update vm c=map count for project
-      become: yes
+
+    - name: Update vm.max_map_count for project
       command: sysctl -w vm.max_map_count=262144
 
     - name: Copy env file to host
       copy:
         src: ./.env
         dest: /home/ubuntu/openclapi
-#        owner: ubuntu
-#        group: ubuntu
-#        mode: '0644'
-#
 
-#    - name: Run docker-compose file
+    - name: Spin up docker containers for the api, celery, es and flower

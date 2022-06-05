@@ -4,8 +4,8 @@ services:
   api:
     image: openconceptlab/oclapi2:${ENVIRONMENT-production}
     restart: "no"
-    ports:
-      - 8000:8000
+    expose:
+      - 8000
     environment:
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
@@ -31,6 +31,15 @@ services:
       - ERRBIT_KEY
     healthcheck:
       test: "curl --silent --fail http://localhost:8000/version/ || exit 1"
+  nginx:
+    image: nginx
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+      - 443:443
+
   celery:
     image: openconceptlab/oclapi2:${ENVIRONMENT-production}
     command: [ "bash", "-c", "CELERY_WORKER_NAME=default ./start_celery_worker.sh -P prefork -Q default -c 2" ]
