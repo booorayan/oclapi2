@@ -2,15 +2,25 @@
 The new and improved OCL terminology service v2
 
 ### Deploy with Ansible
+
 To deploy the api on ec2 instances group with ansible run:
      `git clone https://github.com/booorayan/oclapi2.git`
      
 then:
       `cd ansible`
       
-followed by 
+Run the ansible playbook with the command below
 
-      `ansible-playbook -i inventory.yaml oclapi-playbook.yaml`
+      ansible-playbook -i inventory.yaml oclapi-playbook.yaml
+
+The API is accessible for testing at:
+
+      http://:80
+      
+
+#### Nginx Proxy
+
+Nginx was employed to proxy http requests for security purposes among other reasons.
 
 
 #### Dev Setup
