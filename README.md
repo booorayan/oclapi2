@@ -20,6 +20,11 @@ The API is accessible for testing at:
       http://:80/swagger
       
 
+Ansible runs the configuration commands on a host that is an AWS EC2 instance configured as a member of an auto scaling group. 
+
+Auto scaling of ec2 instances will help improve the scalability of the api in response to requests received.
+
+Further, the instances in the auto scaling group have been configured to be provisioned in different availability zones which improves the availability of the api. The api will be accessible even when one availability zone is unavailable.
 
 The tasks defined in the ansible playbook prepare the ec2 instance by installing required packages and then deploying containers with docker compose.
 
@@ -38,9 +43,20 @@ The deployment utilizes external storage i.e. AWS Postgres RDS and Elastic cache
 
 Also, with RDS, it is easy to connect ec2 instances in auto scaling groups to the same database.
 
+Isolating the database from other application services enhances database optimization
+
+
 #### Nginx Proxy
 
 Nginx was employed to proxy http requests for security purposes among other reasons.
+
+
+#### Security
+
+To ensure security of the api and the instance, strict security group rules were followed.
+
+Only the ports that required inbound access were exposed, limiting the risk of attack from several ports.
+
 
 
 #### Dev Setup
