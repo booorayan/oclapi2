@@ -19,7 +19,24 @@ The API is accessible for testing at:
 
       http://:80/swagger
       
-For the deployment, the Postgres database and redis were not containerized. The deployment utilizes external storage(i.e. AWS Postgres RDS and Elastic cache for redis) which also have the advantage of offering data backup and facilitating disaster recovery. Also, with RDS, it is easy to connect ec2 instances in auto scaling groups to the same database.
+
+
+The tasks defined in the ansible playbook prepare the ec2 instance by installing required packages and then deploying containers with docker compose.
+
+First, it installs packages required by docker and adds the docker repository to the system.
+
+It then installs Docker and Docker-Compose and adds the user 'ubuntu' to docker group to enable running docker commands without sudo privileges.
+
+Finally, the play copies the docker-compose.prod file to the ec2 instance, renames it, copies the file with environment variables and spins up the api together with other containers using `docker-compose up` command
+
+
+#### Storage 
+
+For the deployment, the Postgres database and Redis were not containerized. 
+
+The deployment utilizes external storage i.e. AWS Postgres RDS and Elastic cache for redis, which also have the advantage of offering data backup and facilitating disaster recovery. 
+
+Also, with RDS, it is easy to connect ec2 instances in auto scaling groups to the same database.
 
 #### Nginx Proxy
 
