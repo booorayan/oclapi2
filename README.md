@@ -1,22 +1,25 @@
 # oclapi2
+
 The new and improved OCL terminology service v2
+
 
 ### Deploy with Ansible
 
 To deploy the api on ec2 instances group with ansible run:
      `git clone https://github.com/booorayan/oclapi2.git`
      
-then:
+Then:
       `cd ansible`
       
-Run the ansible playbook with the command below
+Install ansible and run the ansible playbook with the command below to deploy the api
 
       ansible-playbook -i inventory.yaml oclapi-playbook.yaml
 
 The API is accessible for testing at:
 
-      http://:80
+      http://:80/swagger
       
+For the deployment, the Postgres database and redis were not containerized. The deployment utilizes external storage(i.e. AWS Postgres RDS and Elastic cache for redis) which also have the advantage of offering data backup and facilitating disaster recovery. Also, with RDS, it is easy to connect ec2 instances in auto scaling groups to the same database.
 
 #### Nginx Proxy
 
