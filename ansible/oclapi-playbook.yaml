@@ -58,8 +58,8 @@
         dest: /usr/local/bin/docker-compose
         mode: 'u+x,g+x'
 
-    - name: Update vm.max_map_count for project
-      command: sysctl -w vm.max_map_count=262144
+#    - name: Update vm.max_map_count for project
+#      command: sysctl -w vm.max_map_count=262144
 
     - name: Copy Docker compose file to run containers
       copy:
