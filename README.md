@@ -87,3 +87,7 @@ It can trigger alarms when metrics (e.g. resource metrics) exceeds a defined thr
 It also presents logs for error and access checking 
 
 
+#### Challenges
+
+Deploying the containers on a free tier ec2 instance proved a challenge as the instances were limited in compute resources.
+
