@@ -28,7 +28,9 @@ First, it installs packages required by docker and adds the docker repository to
 
 It then installs Docker and Docker-Compose and adds the user 'ubuntu' to docker group to enable running docker commands without sudo privileges.
 
-Finally, the play copies the docker-compose.prod file to the ec2 instance, renames it, copies the file with environment variables and spins up the api together with celery, flower and es containers using `docker-compose up` command
+Finally, the play copies the docker-compose.prod file to the ec2 instance, renames it, copies the file with environment variables and spins up the api together with celery, flower and es containers using the command `docker-compose up` 
+
+The docker-compose file used for the deployment is the `docker-compose.prod.yml` file
 
 #### Scalability and Availability
 
@@ -76,5 +78,10 @@ To ensure security of the api and the instance, strict security group rules were
 Only the ports that required inbound access were exposed, limiting the risk of attack from several ports.
 
 
+## Monitoring
+
+AWS CloudWatch helps to detect issues and resolve problems with enterprise applications, databases, and workloads. 
+
+It can trigger alarms when metrics (e.g. resource metrics) exceeds a defined threshold
 
 
