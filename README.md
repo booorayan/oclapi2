@@ -17,10 +17,10 @@ Install ansible and run the ansible playbook with the command below to deploy th
 
 The API is accessible for testing at:
 
-      http://bo-oclapi2-alb-1963057185.us-east-1.elb.amazonaws.com:80/swagger
+      http://oclapi2-elb-463422178.us-east-1.elb.amazonaws.com/swagger
       
 
-Ansible runs the configuration commands on a host that is an AWS EC2 instance `52.91.27.243` configured as a member of an auto scaling group. 
+Ansible runs the configuration commands on a host that is an AWS EC2 instance `54.196.68.110` configured as a member of an auto scaling group. 
 
 The tasks defined in the ansible playbook prepare the ec2 instance by installing required packages and then deploying containers with docker compose.
 
@@ -60,7 +60,7 @@ The redis cluster also supports multi availability zones improving on the availa
 
 ## Load Balancer
 
-The deployment utilizes an AWS application load balancer `bo-oclapi2-alb-1963057185.us-east-1.elb.amazonaws.com`, which directs http traffic to different ec2 instances that belong to the same target group/auto scaling group. 
+The deployment utilizes an AWS application load balancer `oclapi2-elb-463422178.us-east-1.elb.amazonaws.com`, which directs http traffic to different ec2 instances that belong to the same target group/auto scaling group. 
 
 The load balancer improves the api's availability and scalability since requests can still be served even in the event that one/two instances are unavailable.
 
