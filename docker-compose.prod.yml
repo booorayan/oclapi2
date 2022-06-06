@@ -32,14 +32,12 @@ services:
     healthcheck:
       test: "curl --silent --fail http://localhost:8000/version/ || exit 1"
   nginx:
-    image: nginx
-    build:
-      context: nginx
-      dockerfile: Dockerfile
+    image: booora/nginx_proxy
     ports:
       - 80:80
       - 443:443
-
+    volumes:
+      - /static:/static
   celery:
     image: openconceptlab/oclapi2:${ENVIRONMENT-production}
     command: [ "bash", "-c", "CELERY_WORKER_NAME=default ./start_celery_worker.sh -P prefork -Q default -c 2" ]

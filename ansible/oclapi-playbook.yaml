@@ -25,11 +25,6 @@
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
 
-#    - name: Verify that we have the key with the fingerprint
-#      apt_key:
-#        id: 0EBFCD88
-#        state: present
-
     - name: Set up stable repo
       apt_repository:
         repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
@@ -50,12 +45,6 @@
           - docker-ce
           - docker-ce-cli
           - containerd.io
-
-#    - name: Install docker
-#      apt:
-#        name: docker-ce
-#        state: present
-#        update_cache: yes
 
     - name: Add user 'ubuntu' to 'docker' group
       user:
@@ -84,12 +73,6 @@
       copy:
         src: ../.env
         dest: /home/ubuntu
-
-#    - name: Spin up docker containers for the api, celery, es and flower
-#      docker_compose:
-#        files: ../docker-compose.prod.yml
-#
-#      register: output
 
     - name: Run container with docker compose
       command: docker-compose up
