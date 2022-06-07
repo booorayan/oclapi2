@@ -1,2 +1,2 @@
 [ec2]
-ec2-instance ansible_host=54.196.68.110 ansible_user=ubuntu ansible_ssh_private_key_file=/home/bo/Downloads/openclapi.pem
+ec2-instance ansible_host=44.201.1.108 ansible_user=ubuntu ansible_ssh_private_key_file=/home/bo/Downloads/openclapi.pem
