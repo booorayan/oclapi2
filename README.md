@@ -82,6 +82,12 @@ Only the ports that required inbound access were exposed, limiting the risk of a
 
 AWS CloudWatch helps to detect issues and resolve problems with enterprise applications, databases, and workloads. 
 
-It can trigger alarms when metrics (e.g. resource metrics) exceeds a defined threshold
+It can trigger alarms when metrics (e.g. resource metrics) exceeds a defined threshold. 
 
+It also presents logs for error and access checking 
+
+
+#### Challenges
+
+Deploying the containers on a free tier ec2 instance proved a challenge as the instances were limited in compute resources.
 
