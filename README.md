@@ -63,7 +63,9 @@ Prometheus and Grafana can also serve as viable alternatives to AWS CloudWatch a
 
 ## Security and Server Hardening
 
-To ensure security of the api and the instance, strict security group rules were enforced.
-
-Only the ports that required inbound access were exposed externally, limiting the risk of attack from several ports.
+- To ensure security of the api and the instance, strict security group rules were enforced.
+- Only the ports that required inbound access were exposed externally, limiting the risk of attack from several ports.
+- The ssh port was changed from the default port 22 to another port, limiting brute force attacks
+- Access was limited to using only private keys as opposed to password login. 
+- Application is run by a user with no root privileges.
 
